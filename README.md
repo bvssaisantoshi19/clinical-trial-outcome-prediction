@@ -109,95 +109,6 @@ All cleaned and processed outputs were organized as follows:
 
 ## 🤖 Modeling & Evaluation (Summary)
 
-Two supervised machine-learning models were developed to predict **clinical-trial completion success (1) or failure (0)**  
-using the cleaned and feature-engineered datasets created during the EDA phase.
-
-### 🧱 Models Used
-- **Logistic Regression** — interpretable baseline model using one-hot-encoded categorical features  
-- **XGBoost** — gradient-boosted ensemble model using grouped categorical representations  
-
-Both models were trained on the same balanced feature set containing:
-- Phase, Intervention Type, Condition, Allocation, Masking, Model, Purpose, Sponsor  
-- Log-scaled numerical features (`log_enrollment`, `log_duration`, `number_of_arms`, `intervention_count`)  
-- Binary design flags (`has_dmc`, `is_fda_regulated_drug`, `healthy_volunteers`, etc.)
-
-### ⚙️ Training Workflow
-1. **Data Split:** 80 % training / 20 % testing, stratified by outcome  
-2. **Hyperparameter Tuning:** Grid-search with 3-fold stratified cross-validation  
-3. **Optimization Metric:** Youden’s J Index ( *Sensitivity + Specificity – 1* )  
-4. **Threshold Selection:**  
-   - Logistic Regression ≈ 0.42  
-   - XGBoost ≈ 0.85  
-   ensuring balanced detection of both successes and failures  
-
-### 📊 Evaluation Metrics
-Performance was assessed on the held-out test set using:
-- Accuracy, Precision, Recall, F1-Score, ROC-AUC  
-- Confusion Matrix for class-wise evaluation  
-- Precision–Recall curves for threshold validation  
-
-### 💡 Model Interpretability
-Model explainability was performed using **SHAP (SHapley Additive exPlanations)**:
-- **Global Interpretation:** Feature-importance summary and interaction plots identified the strongest predictors of trial success  
-- **Local Interpretation:** Force plots and waterfall charts illustrated how each variable influenced individual predictions  
-
-Key influential features included:  
-`phase`, `intervention_type`, `allocation`, `masking`, `model`, `purpose`, and `sponsor_type`.  
-
-### 📂 Output Artifacts
-All model outputs and metrics are stored in:
-## 🤖 Modeling & Evaluation (Summary)
-
-Two supervised machine learning models were developed to predict **clinical trial success (1)** or **failure (0)**  
-using the cleaned and feature-engineered datasets prepared after the EDA phase.
-
-### 🧱 Models Used
-- **Logistic Regression (SAGA + L2 regularization)** — interpretable baseline model trained on one-hot encoded categorical features  
-- **XGBoost** — ensemble tree-based model trained on grouped categorical features for improved generalization  
-
-Both models used the same harmonized feature set containing:
-- Categorical design elements: Phase, Intervention Type, Condition, Allocation, Masking, Model, Purpose, Sponsor  
-- Log-scaled numerical features: `log_enrollment`, `log_duration`, `number_of_arms`, `intervention_count`  
-- Binary trial design flags: `has_dmc`, `is_fda_regulated_drug`, `healthy_volunteers`, etc.  
-
----
-
-### ⚙️ Training Workflow
-1. **Data Split:** 80 % training / 20 % testing (stratified by success/failure outcome)  
-2. **Model Selection:**  
-   - Logistic Regression: manually compared multiple solvers (LBFGS, SAGA) and regularization strengths (C = 0.01 → 3)  
-   - XGBoost: evaluated variations in tree depth (6–8) and estimators (200–500) to balance accuracy and overfitting  
-3. **Threshold Optimization:** Youden’s J Index (*Sensitivity + Specificity – 1*) was used to find the best cutoff for each model:  
-   - Logistic Regression ≈ **0.42**  
-   - XGBoost ≈ **0.85**  
-   This ensured a fair balance between identifying both successful and failed trials.
-
----
-
-### 📊 Evaluation Metrics
-Model performance was assessed using:
-- Accuracy, Precision, Recall, F1-score, and ROC-AUC  
-- Confusion matrix to examine class-level predictions  
-- Precision–Recall curve to visualize trade-offs across thresholds  
-
----
-
-### 💡 Model Interpretability (SHAP Analysis)
-To enhance explainability, **SHAP (SHapley Additive exPlanations)** was used for both global and local interpretation:  
-- **Global:** Identified the strongest contributors to trial success — `phase`, `intervention_type`, `allocation`, `masking`, and `purpose`.  
-- **Local:** Individual-level SHAP force and waterfall plots showed how specific features influenced each prediction.  
-
-This allowed visualization of why similar trials could yield opposite outcomes despite shared parameters.
-
----
-
-### 📂 Output Artifacts
-All model-related files and evaluation results were saved under:
-
----
-
-## 🤖 Modeling & Evaluation (Summary)
-
 Two supervised machine learning models were developed to predict **clinical trial success (1)** or **failure (0)**  
 using the cleaned and feature-engineered datasets finalized after EDA.
 
@@ -258,3 +169,93 @@ and feature lists (X_cols_logreg.pkl, X_cols_xgb.pkl)
 - **XGBoost** achieved better recall and overall balance, identifying more realistic design patterns linked to successful outcomes.  
 - The combination of both provided a complete perspective — **explainability** from Logistic Regression and **predictive strength** from XGBoost.
 
+---
+
+## 🌐 Streamlit App (Deployment Summary)
+
+A Streamlit web application was built to make the model results interactive and interpretable.  
+It integrates both **Logistic Regression** and **XGBoost** models with their **Youden’s J thresholds**
+(LogReg ≈ 0.42, XGBoost ≈ 0.85).
+
+### 🔹 Key Features
+- **Interactive design input:** Users can select trial parameters such as phase, intervention type, conditions, allocation, masking, sponsor etc.  
+- **Automatic validity checks:** Flags logically invalid configurations (e.g., randomized single-group trials).  
+- **Model interpretation section:** Explains threshold rationale, limitations, and ethical disclaimer in a collapsible block.  
+- **Local and cloud ready:** Can be run via  
+  ```bash
+  streamlit run app/app.py
+
+or deployed directly to Streamlit Cloud.
+
+All supporting files (app.py, requirements.txt, README_app.txt, and model artifacts) are located in the /app directory.
+
+Purpose: Provide a transparent, user-friendly interface to explore how design features affect predicted trial outcomes.
+
+---
+
+## 📊 Results & Key Insights (Summary)
+
+### 🧩 Exploratory Data Analysis
+- Univariate, bivariate, and multivariate analyses revealed clear design-level patterns in clinical trial outcomes.  
+- Higher success rates were observed in **Phase 3**, **randomized**, **parallel**, and **double-masked** trials.  
+- Behavioral and open-label single-group studies showed comparatively lower completion rates.  
+- EDA results guided final feature selection and informed model input choices.
+
+---
+
+### 🤖 Modeling
+- Two models were trained and evaluated:
+  - **Logistic Regression** (Youden J ≈ 0.42)  
+  - **XGBoost** (Youden J ≈ 0.85)  
+- XGBoost achieved stronger recall and overall balance, while Logistic Regression provided interpretability.  
+- Youden’s J thresholds improved recognition of both successful and failed designs compared with the standard 0.5 cut-off.  
+
+---
+
+### 💡 Model Interpretability (SHAP)
+- Key global contributors: **Phase**, **Masking**, **Model**, **Allocation**, and **Sponsor**.  
+- Local SHAP plots confirmed that robust trial designs (e.g., randomized + double-masked + industry-sponsored) increased predicted success probabilities.
+
+---
+
+### ✅ Overall Outcome
+- Developed a consistent, interpretable framework for predicting **trial design feasibility** using AACT data.  
+- Cleaned, feature-optimized datasets were prepared for modeling and deployment.  
+- Streamlit app enables real-time exploration of model predictions with automatic design validity checks.
+
+---
+
+## 🧭 Conclusion & Future Scope
+
+This project demonstrates how **data-driven modeling can assist in clinical trial design assessment** using publicly available AACT data.  
+By combining rigorous EDA, interpretable machine learning, and real-time deployment, the workflow provides a foundation for analyzing and predicting trial feasibility.
+
+### 🔹 Key Outcomes
+- Built a reproducible pipeline from raw AACT tables to model-ready datasets.  
+- Identified statistically significant design factors influencing trial completion.  
+- Implemented and deployed predictive models with explainability using SHAP.  
+- Created an interactive Streamlit app for transparent result exploration.
+
+### 🔹 Future Scope
+- Extend modeling to **time-to-completion** or **success probability over time** using survival analysis.  
+- Integrate **textual and protocol-level data** (e.g., study abstracts, interventions description).  
+- Develop **Power BI dashboards** or cloud APIs for institutional analytics use.  
+- Expand dataset to include **safety-related and adverse event metrics** for deeper clinical insights.
+
+---
+
+## 📚 Citation & Credits
+
+If you reference or build upon this work, please cite:
+
+> **Bhogadi, Sai Santoshi (2025).**  
+> *Clinical Trial Outcome Prediction: A Machine Learning Approach Using AACT Data.*  
+> GitHub Repository: [https://github.com/USERNAME/clinical-trial-outcome-prediction](https://github.com/USERNAME/clinical-trial-outcome-prediction)
+
+**Data Source:** AACT (ClinicalTrials.gov)  
+**Models Used:** Logistic Regression, XGBoost  
+**Developed with:** Python, Pandas, scikit-learn, XGBoost, Streamlit  
+
+---
+
+📄 *This concludes the main README for the Clinical Trial Outcome Prediction project.*
