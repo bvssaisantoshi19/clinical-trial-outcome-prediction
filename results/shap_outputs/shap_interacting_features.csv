@@ -1,0 +1,20 @@
+Main feature,Top interacting feature,Top interaction value
+log_duration,phase_grouped,0.229
+is_fda_regulated_device,log_enrollment,0.187
+elig_age_grouped,log_enrollment,0.168
+allocation_grouped,log_enrollment,0.123
+elig_gender_grouped,log_enrollment,0.088
+model_grouped,log_enrollment,0.079
+purpose_grouped,log_enrollment,0.062
+number_of_arms,log_enrollment,0.058
+condt_grouped,log_duration,0.043
+sponsor_grouped,log_duration,0.036
+intervention_grouped,log_duration,0.018
+healthy_volunteers,phase_grouped,0.018
+masking_grouped,sponsor_grouped,0.018
+phase_grouped,log_duration,0.016
+intervention_count,intervention_grouped,0.01
+high_enroll_flag_975,elig_age_grouped,0.009
+is_fda_regulated_drug,phase_grouped,0.001
+has_dmc,sponsor_grouped,0.0
+log_enrollment,log_duration,0.0
