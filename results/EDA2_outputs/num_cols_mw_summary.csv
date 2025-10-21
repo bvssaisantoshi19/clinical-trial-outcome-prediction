@@ -1,0 +1,7 @@
+Feature,Failure_total,Success_total,Failure_median,Success_median,IQR_failure,IQR_success,U_stat,p_value,effect_size_r
+enrollment,38089,225047,8.0,60.0,36.0,118.0,1.67e+09,0,0.371
+log_enrollment,38089,225047,2.2,4.11,3.61,1.57,1.67e+09,0,0.371
+number_of_arms,38089,225047,2.0,2.0,1.0,0.0,3.85e+09,2.2e-274,0.062
+intervention_count,38089,225047,1.0,1.0,0.0,0.0,4.52e+09,2.9e-188,0.033
+duration_of_study,38089,225047,730.0,641.0,882.0,946.0,4.53e+09,3e-73,0.035
+log_duration,38089,225047,6.59,6.46,1.22,1.43,4.53e+09,3e-73,0.035

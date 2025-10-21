@@ -1,0 +1,11 @@
+Feature,Chi2,p_value,Cramers_v
+phase_grouped,3500.07,0.0,0.115
+intervention_grouped,4597.89,0.0,0.132
+condt_grouped,5158.68,0.0,0.14
+allocation_grouped,1924.25,0.0,0.086
+masking_grouped,1778.1,0.0,0.082
+model_grouped,2809.22,0.0,0.103
+purpose_grouped,2164.3,0.0,0.091
+sponsor_grouped,117.93,0.0,0.021
+elig_age_grouped,411.46,0.0,0.04
+elig_gender_grouped,243.62,0.0,0.03

@@ -1,0 +1,5 @@
+allocation_grouped,Failure,Success,Total,Success_rate,Failure_rate,Expected_Failure,Expected_Success,Residual_Failure,Residual_Success
+None,819,4972,5791,85.86,14.14,838.25,4952.75,-0.66,0.27
+non_randomized,15665,67244,82909,81.11,18.89,12001.1,70907.9,33.45,-13.76
+randomized,21155,149502,170657,87.6,12.4,24702.64,145954.36,-22.57,9.29
+unknown,450,3329,3779,88.09,11.91,547.01,3231.99,-4.15,1.71

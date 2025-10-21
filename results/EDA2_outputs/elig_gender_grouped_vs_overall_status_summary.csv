@@ -1,0 +1,4 @@
+elig_gender_grouped,Failure,Success,Total,Success_rate,Failure_rate,Expected_Failure,Expected_Success,Residual_Failure,Residual_Success
+all,33385,191006,224391,85.12,14.88,32480.65,191910.35,5.02,-2.06
+female,3286,21984,25270,87.0,13.0,3657.84,21612.16,-6.15,2.53
+male,1418,12057,13475,89.48,10.52,1950.51,11524.49,-12.06,4.96

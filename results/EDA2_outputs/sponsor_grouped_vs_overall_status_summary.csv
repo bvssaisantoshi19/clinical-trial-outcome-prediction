@@ -1,0 +1,6 @@
+sponsor_grouped,Failure,Success,Total,Success_rate,Failure_rate,Expected_Failure,Expected_Success,Residual_Failure,Residual_Success
+Government,1165,8582,9747,88.05,11.95,1410.88,8336.12,-6.55,2.69
+Industry,10959,62302,73261,85.04,14.96,10604.55,62656.45,3.44,-1.42
+Multiple,8841,48982,57823,84.71,15.29,8369.89,49453.11,5.15,-2.12
+Other,17123,105166,122289,86.0,14.0,17701.36,104587.64,-4.35,1.79
+Unknown,1,15,16,93.75,6.25,2.32,13.68,-0.87,0.36

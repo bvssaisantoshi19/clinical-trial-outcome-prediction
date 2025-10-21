@@ -1,0 +1,6 @@
+elig_age_grouped,Failure,Success,Total,Success_rate,Failure_rate,Expected_Failure,Expected_Success,Residual_Failure,Residual_Success
+adult,24287,140286,164573,85.24,14.76,23821.98,140751.02,3.01,-1.24
+child,1747,15065,16812,89.61,10.39,2433.54,14378.46,-13.92,5.73
+mixed,10949,60559,71508,84.69,15.31,10350.8,61157.2,5.88,-2.42
+senior,209,1194,1403,85.1,14.9,203.08,1199.92,0.42,-0.17
+unknown,897,7943,8840,89.85,10.15,1279.59,7560.41,-10.7,4.4
