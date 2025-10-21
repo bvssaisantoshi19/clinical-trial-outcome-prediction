@@ -1,0 +1,8 @@
+Category,Total_success,Total_failure,Median_success,IQR_success,Median_failure,IQR_failure,U_stat,p_value,Effect_size_r
+factorial,3468,362,120.0,310.0,12.0,69.25,1.01e+06,2.6e-81,0.309
+parallel,133610,20706,88.0,163.0,13.0,57.0,2.21e+09,0,0.354
+None,4972,819,60.0,119.0,8.0,35.0,3.33e+06,1.1e-188,0.385
+unknown,2993,274,47.0,78.0,28.0,56.25,5.52e+05,1.7e-21,0.166
+sequential,4460,1349,42.0,60.0,11.0,31.0,4.69e+06,8.4e-214,0.409
+single_group,52432,12596,31.0,50.0,5.0,18.0,5.41e+08,0,0.436
+crossover,23112,1983,30.0,33.0,5.0,18.0,3.82e+07,0,0.311
