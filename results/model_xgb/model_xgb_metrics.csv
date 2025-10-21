@@ -1,0 +1,2 @@
+Accuracy_0.5,Precision_0.5,Recall_0.5,F1_0.5,ROC_AUC,Best_threshold,Accuracy_opt,Precision_opt,Recall_opt,F1_opt
+0.914,0.92,0.986,0.952,0.883,0.854,0.851,0.951,0.871,0.909
