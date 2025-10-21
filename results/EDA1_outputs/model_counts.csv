@@ -1,0 +1,7 @@
+,category,count,percentage
+0,Parallel,154316.0,58.64
+1,Single_Group,65028.0,24.71
+2,Crossover,25095.0,9.54
+3,Sequential,5809.0,2.21
+4,Factorial,3830.0,1.46
+5,Unknown,3267.0,1.24
