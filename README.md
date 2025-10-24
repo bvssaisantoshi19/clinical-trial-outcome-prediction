@@ -148,8 +148,8 @@ cd app
 streamlit run app.py
 ```
 
-*All supporting files (app.py, requirements.txt, README_app.txt, and model artifacts) are located in the /app directory.*
-*Full app details live in /app/README_app.txt.*
+*All supporting files (app.py, requirements.txt, and model artifacts) are located in the /app directory.*
+*Full app details live in /app/README*
 
 ---
 
