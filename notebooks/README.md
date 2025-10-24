@@ -1,4 +1,4 @@
-# 📘 Clinical Trial Outcome Prediction — Notebooks Overview
+# Clinical Trial Outcome Prediction — Notebooks Overview
 
 This folder contains the complete **data preparation, exploratory analysis, and modeling workflow** for the *Clinical Trial Outcome Prediction* project.  
 Each notebook builds sequentially on the previous step, ensuring a reproducible, end-to-end data science pipeline — from raw AACT tables to model interpretability and Streamlit deployment.
@@ -13,21 +13,18 @@ Each table from the AACT (ClinicalTrials.gov) database was cleaned individually 
 
 | Notebook | Description | Output |
 |-----------|-------------|---------|
-| `1_df_studies.ipynb` | Cleans and standardizes the **`studies`** table. Handles missing values, converts date columns, fills `enrollment` by phase-wise median, and reassigns combined phases (e.g., *Phase 1/2*) based on enrollment distribution. | `1_df_studies.csv` |
-| `2_df_baseline_features.ipynb` | Processes **baseline counts & measurements** to generate participant-level demographics. Handles missingness and merges into summarized baseline features. | `2_df_baseline_features.csv` |
+| `1_df_studies.ipynb` | Cleans and standardizes the **`studies`** table. Handles missing values, converts date columns, calculates duration of the study, fills `enrollment` by phase-wise median, and reassigns combined phases (e.g., *Phase 1/2*) based on enrollment distribution. | `1_df_studies.csv` |
+| `2_df_baseline_features.ipynb` | Processes **baseline counts & measurements** to generate participant-level demographics. Handles missingness and merges into summarized baseline features. **baseline features** were later dropped since most of the data was missing and inconsistent | `2_df_baseline_features.csv` |
 | `3_df_interventions.ipynb` | Simplifies and one-hot encodes **intervention types** (Drug, Device, Behavioral, etc.), aggregating them by trial ID. | `3_df_interventions.csv` |
-| `4_df_conditions.ipynb` | Groups 250+ specific disease terms into 15+ broader **condition categories** (e.g., Cancer, Cardiovascular, Neurological). | `4_df_conditions.csv` |
-| `5_df_designs.ipynb` | Extracts and standardizes **design attributes** such as Allocation, Masking, Model, and Purpose for modeling. | `5_df_designs.csv` |
-| `6_df_eligibilities.ipynb` | Cleans eligibility-level data, generating flags for **age group** and **gender** categories. | `6_df_eligibilities.csv` |
+| `4_df_conditions.ipynb` | Groups 250+ specific disease terms into 15+ broader **condition categories** (e.g., Cancer, Cardiovascular, Neurological) and one-hot encodes condition groups. | `4_df_conditions.csv` |
+| `5_df_designs.ipynb` | Extracts, standardizes and one-hot encodes **design attributes** such as Allocation, Masking, Model, and Purpose for modeling. | `5_df_designs.csv` |
+| `6_df_eligibilities.ipynb` | Cleans eligibility-level data, generating flags for **age group**, **gender**, **healthy volunteers** categories. | `6_df_eligibilities.csv` |
 | `7_df_sponsors.ipynb` | Aggregates and classifies sponsors (Industry, Government, Other). **Sponsor roles** were later dropped since most were “Lead.” | `7_df_sponsors.csv` |
 | `8_df_merged.ipynb` | Merges all cleaned datasets into a **single master file (`df_merged.csv`)** for EDA. | `df_merged.csv` |
-| `9_df_final.ipynb` | Incorporates EDA insights to remove non-informative columns (e.g., `sponsor_role`, `high_enrollment_flag`) and apply log-transformations to `enrollment` and `duration`, finalizing the **model-ready dataset**. | `df_final_grouped.csv` & `df_final_onehot.csv`|
+| `9_df_final.ipynb` | Incorporates EDA insights to remove non-informative columns (e.g., `sponsor_role`, `high_enrollment_flag`) and apply log-transformations to `enrollment` and `duration`, finalizing the **model-ready dataset**. | `df_final_grouped.csv`, `df_final_onehot.csv`|
 
-🗂️ **All cleaned and processed files:**  
-Stored in `../data/processed/`
-
-🗂️ **final modeling-ready datasets:** 
-Stored in `../data/final/`
+📂 **Processed datasets:** stored in `../data/processed/`
+📂 **Final modeling-ready datasets:** stored in `../data/final/` 
 
 ---
 
@@ -35,9 +32,9 @@ Stored in `../data/final/`
 
 | Notebook | Focus | Output |
 |-----------|--------|---------|
-| `df_EDA_1.ipynb` | **Univariate Analysis** – explores distributions of numerical (`log_enrollment`, `log_duration`) and categorical variables, identifies outliers, and visualizes class imbalance. | `df_EDA_1.csv` |
-| `df_EDA_2.ipynb` | **Bivariate Analysis** – studies feature-outcome relationships using Chi², Cramér’s V, and Mann–Whitney U tests. Inline plots are shown for features with strong associations (Cramér’s V > 0.1). | `df_EDA_2.csv` |
-| `df_EDA_3.ipynb` | **Multivariate Analysis** – analyzes how combinations of variables (e.g., `Phase × Intervention`, `Condition × Model`) influence trial success. Highlights inter-feature dependencies for modeling. | `df_EDA_3.csv` |
+| `df_EDA_1.ipynb` | **Univariate Analysis** – explores distributions of numerical and categorical variables; identifies outliers, visualizes class imbalance and summary statistics. | `df_EDA_1.csv` |
+| `df_EDA_2.ipynb` | **Bivariate Analysis** –investigates associations between features and `overall_status` using Chi², Cramér’s V, and Mann–Whitney U tests. Inline plots are shown for features with strong associations (Cramér’s V > 0.1). | `df_EDA_2.csv` |
+| `df_EDA_3.ipynb` | **Multivariate Analysis** – explores interactions between multiple variables (e.g., Phase × Intervention, Condition × Model) that influence trial success, residual heatmaps, and dependency patterns. | `df_EDA_3.csv` |
 
 📂 **EDA Outputs:**  
 All visualizations, residual heatmaps, and test summaries are saved under:
@@ -45,9 +42,7 @@ All visualizations, residual heatmaps, and test summaries are saved under:
 `../results/EDA2_outputs/`
 `../results/EDA3_outputs/`
 
-📂 **Each stage also exports cleaned intermediate datasets to**:
-`../data/processed/`
-
+📂 **Each stage also exports cleaned intermediate datasets to**: `../data/processed/`
 
 ---
 
@@ -59,30 +54,9 @@ All visualizations, residual heatmaps, and test summaries are saved under:
 | `model_xgboost.ipynb` | Builds an **XGBoost Classifier** with tuned hyperparameters (`n_estimators`, `max_depth`, `scale_pos_weight`) and applies the Youden threshold (~0.85). | `xgb_pipeline.pkl` in `../models/` |
 | `SHAP.ipynb` | Performs **SHAP-based interpretability** for both models, including global (summary, bar) and local (force, waterfall) visualizations. | SHAP plots in `../results/shap_outputs/` |
 
-🧾 **Model Artifacts & Results**
-- Saved pipelines: `../models/logreg_pipeline.pkl`, `../models/xgb_pipeline.pkl`  
-- Encoded column lists: `../models/X_cols_logreg.pkl`, `../models/X_cols_xgb.pkl`  
-- Metrics & thresholds:  
-  - `../results/model_logreg/model_logreg_metrics.csv`  
-  - `../results/model_xgb/model_xgb_metrics.csv`
-
----
-
-## 🧠 Key Insights from Data & Models
-
----
-
-### 🤖 **Modeling & Interpretability**
-
-| Notebook | Description | Output |
-|-----------|-------------|---------|
-| `model_logreg.ipynb` | Trains a **Logistic Regression** model using the Youden’s J threshold (~0.42). Tests multiple solvers (LBFGS, SAGA) and regularizations (L1/L2). | `logreg_pipeline.pkl` in `../models/` |
-| `model_xgboost.ipynb` | Builds an **XGBoost Classifier** with tuned hyperparameters (`n_estimators`, `max_depth`, `scale_pos_weight`) and applies the Youden threshold (~0.85). | `xgb_pipeline.pkl` in `../models/` |
-| `SHAP.ipynb` | Performs **SHAP-based interpretability** for both models, including global (summary, bar) and local (force, waterfall) visualizations. | SHAP plots in `../results/shap_outputs/` |
-
-🧾 **Model Artifacts & Results**
-- Saved pipelines: `../models/logreg_pipeline.pkl`, `../models/xgb_pipeline.pkl`  
-- Encoded column lists: `../models/X_cols_logreg.pkl`, `../models/X_cols_xgb.pkl`  
+📂 **Model Artifacts & Results**
+- Pipelines: `../models/logreg_pipeline.pkl`, `../models/xgb_pipeline.pkl`  
+- Feature Encodings: `../models/X_cols_logreg.pkl`, `../models/X_cols_xgb.pkl`  
 - Metrics & thresholds:  
   - `../results/model_logreg/model_logreg_metrics.csv`  
   - `../results/model_xgb/model_xgb_metrics.csv`
