@@ -3,19 +3,11 @@ channels:
   - defaults
   - conda-forge
 dependencies:
-  - matplotlib==3.9.2
-  - numpy==1.26.4
-  - pandas==2.2.2
-  - plotly==5.24.1
-  - psycopg2-binary==2.9.10
-  - python-dotenv==1.1.1
-  - scikit-learn==1.5.1
-  - scipy==1.13.1
-  - seaborn==0.13.2
-  - joblib= 1.4.2
-  - shap==0.48.0
-  - SQLAlchemy==2.0.43
-  - streamlit==1.37.1
-  - xgboost==3.0.4
+  - python=3.12
+  - pip
+  - pip:
+      - -r requirements.txt
+ 
+
 
 
