@@ -37,38 +37,30 @@ RESULTS_DIR = REPO_ROOT / "results"
 
 @st.cache_resource
 def load_models():
-    try:
-        # list what exists (helps debug on Streamlit Cloud)
-        st.write("📁 Models dir:", MODELS_DIR)
-        st.write("📁 Results dir:", RESULTS_DIR)
-        st.write("Models present:", [p.name for p in MODELS_DIR.glob("*")])
-        st.write("Results subdirs:", [p.name for p in RESULTS_DIR.glob("*")])
+    st.write("📁 Models dir:", MODELS_DIR)
+    st.write("📁 Results dir:", RESULTS_DIR)
+    st.write("Models present:", [p.name for p in MODELS_DIR.glob("*")])
+    st.write("Results subdirs:", [p.name for p in RESULTS_DIR.glob("*")])
 
-        # models
-        logreg_model = joblib.load(MODELS_DIR / "logreg_pipeline.pkl")
-        xgb_model    = joblib.load(MODELS_DIR / "xgb_pipeline.pkl")
+    # models
+    logreg_model = joblib.load(MODELS_DIR / "logreg_pipeline.pkl")
+    xgb_model    = joblib.load(MODELS_DIR / "xgb_pipeline.pkl")
 
-        # feature lists
-        with open(MODELS_DIR / "X_cols_logreg.pkl", "rb") as f:
-            X_cols_logreg = pickle.load(f)
-        with open(MODELS_DIR / "X_cols_xgb.pkl", "rb") as f:
-            X_cols_xgb = pickle.load(f)
+    # feature lists
+    with open(MODELS_DIR / "X_cols_logreg.pkl", "rb") as f:
+        X_cols_logreg = pickle.load(f)
+    with open(MODELS_DIR / "X_cols_xgb.pkl", "rb") as f:
+        X_cols_xgb = pickle.load(f)
 
-        # thresholds (or hard-code if you prefer)
-        logreg_metrics = pd.read_csv(RESULTS_DIR / "model_logreg" / "model_logreg_metrics.csv")
-        xgb_metrics    = pd.read_csv(RESULTS_DIR / "model_xgb"    / "model_xgb_metrics.csv")
-        best_thr_lr  = float(logreg_metrics["best_threshold"].iloc[0])
-        best_thr_xgb = float(xgb_metrics["best_threshold"].iloc[0])
+    # thresholds (or hard-code if you prefer)
+    logreg_metrics = pd.read_csv(RESULTS_DIR / "model_logreg" / "model_logreg_metrics.csv")
+    xgb_metrics    = pd.read_csv(RESULTS_DIR / "model_xgb"    / "model_xgb_metrics.csv")
+    best_thr_lr  = float(logreg_metrics["best_threshold"].iloc[0])
+    best_thr_xgb = float(xgb_metrics["best_threshold"].iloc[0])
 
-        return logreg_model, X_cols_logreg, xgb_model, X_cols_xgb, best_thr_lr, best_thr_xgb
+    return logreg_model, X_cols_logreg, xgb_model, X_cols_xgb, best_thr_lr, best_thr_xgb
 
-    except Exception as e:
-        # Show the full message in the UI so we know exactly what's wrong
-        st.error(f"Model/metrics load failed: {type(e).__name__}: {e}")
-        # Re-raise to stop the app (optional)
-        raise
-
-    logreg_model, X_cols_logreg, xgb_model, X_cols_xgb, best_thr_lr, best_thr_xgb = load_models()
+logreg_model, X_cols_logreg, xgb_model, X_cols_xgb, best_thr_lr, best_thr_xgb = load_models()
 
 # === Mapping Dictionaries ===
 phase_map = {'Not Applicable': 'phase_not applicable', 'Phase 1': 'phase_1', 'Phase 2': 'phase_2', 'Phase 3': 'phase_3', 'Phase 4': 'phase_4'}
