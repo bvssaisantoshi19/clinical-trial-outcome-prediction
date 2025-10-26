@@ -51,8 +51,8 @@ def load_models():
 
         logreg_metrics = pd.read_csv(f"{RESULTS_DIR}/model_logreg/model_logreg_metrics.csv")
         xgb_metrics    = pd.read_csv(f"{RESULTS_DIR}/model_xgb/model_xgb_metrics.csv")
-        best_thr_lr  = (logreg_metrics["best_threshold"].iloc[0])
-        best_thr_xgb = (xgb_metrics["best_threshold"].iloc[0])
+        best_thr_lr  = float(logreg_metrics["Best_threshold"].iloc[0])
+        best_thr_xgb = float(xgb_metrics["Best_threshold"].iloc[0])
 
         return logreg_model, X_cols_logreg, xgb_model, X_cols_xgb, best_thr_lr, best_thr_xgb
 
