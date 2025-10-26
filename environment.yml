@@ -5,16 +5,10 @@ channels:
 dependencies:
   - python=3.12
   - pip
-  - numpy=1.26.4
-  - pandas=2.2.2
-  - scikit-learn=1.5.1
-  - scipy=1.13.1
-  - joblib=1.4.2
-  - streamlit=1.37.1
-  - xgboost=3.0.4
   - pip:
       - -r requirements.txt
  
+
 
 
 
