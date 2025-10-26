@@ -16,6 +16,7 @@ The app also performs basic clinical design validity checks and provides interpr
 import streamlit as st
 import pandas as pd
 import numpy as np
+from pathlib import Path
 import pickle
 import joblib
 
@@ -29,21 +30,43 @@ based on design characteristics using machine learning models trained on the **A
 Predictions are derived from statistical patterns in historical clinical trial data.
 """)
 
-# === Load Models ===
+# === Load Models & Thresholds (robust relative paths) ===
 @st.cache_resource
 def load_models():
-    logreg_model = joblib.load("../models/logreg_pipeline.pkl")
-    with open("../models/X_cols_logreg.pkl", "rb") as f:
-        X_cols_logreg = pickle.load(f)
+    # /app/app.py -> /app
+    APP_DIR = Path(__file__).resolve().parent
+    # project root
+    ROOT = APP_DIR.parent
+    MODELS_DIR = ROOT / "models"
+    RESULTS_DIR = ROOT / "results"
 
-    xgb_model = joblib.load("../models/xgb_pipeline.pkl")
-    with open("../models/X_cols_xgb.pkl", "rb") as f:
-        X_cols_xgb = pickle.load(f)
+    # helpful check (optional): show what's available if something is missing
+    def _assert_exists(p: Path):
+        if not p.exists():
+            st.error(f"Missing file: {p}")
+            raise FileNotFoundError(p)
 
-    # Load thresholds from metrics files
-    best_thr_lr = pd.read_csv("../results/model_logreg/model_logreg_metrics.csv")['Best_threshold'].iloc[0]
-    best_thr_xgb = pd.read_csv("../results/model_xgb/model_xgb_metrics.csv")['Best_threshold'].iloc[0]
-    
+    # model pipelines
+    p_logreg = MODELS_DIR / "logreg_pipeline.pkl"
+    p_xgb    = MODELS_DIR / "xgb_pipeline.pkl"
+    _assert_exists(p_logreg); _assert_exists(p_xgb)
+    logreg_model = joblib.load(p_logreg)
+    xgb_model    = joblib.load(p_xgb)
+
+    # feature column lists
+    p_cols_lr = MODELS_DIR / "X_cols_logreg.pkl"
+    p_cols_xg = MODELS_DIR / "X_cols_xgb.pkl"
+    _assert_exists(p_cols_lr); _assert_exists(p_cols_xg)
+    with open(p_cols_lr, "rb") as f: X_cols_logreg = pickle.load(f)
+    with open(p_cols_xg, "rb") as f: X_cols_xgb    = pickle.load(f)
+
+    # thresholds from results
+    p_lr_metrics = RESULTS_DIR / "model_logreg" / "model_logreg_metrics.csv"
+    p_xgb_metrics = RESULTS_DIR / "model_xgb" / "model_xgb_metrics.csv"
+    _assert_exists(p_lr_metrics); _assert_exists(p_xgb_metrics)
+    best_thr_lr  = pd.read_csv(p_lr_metrics).loc[0, "best_threshold"]
+    best_thr_xgb = pd.read_csv(p_xgb_metrics).loc[0, "best_threshold"]
+
     return logreg_model, X_cols_logreg, xgb_model, X_cols_xgb, best_thr_lr, best_thr_xgb
 
 logreg_model, X_cols_logreg, xgb_model, X_cols_xgb, best_thr_lr, best_thr_xgb = load_models()
