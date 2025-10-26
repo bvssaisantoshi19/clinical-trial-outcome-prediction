@@ -68,6 +68,8 @@ def load_models():
         # Re-raise to stop the app (optional)
         raise
 
+logreg_model, X_cols_logreg, xgb_model, X_cols_xgb, best_thr_lr, best_thr_xgb = load_models()
+
 # === Mapping Dictionaries ===
 phase_map = {'Not Applicable': 'phase_not applicable', 'Phase 1': 'phase_1', 'Phase 2': 'phase_2', 'Phase 3': 'phase_3', 'Phase 4': 'phase_4'}
 
