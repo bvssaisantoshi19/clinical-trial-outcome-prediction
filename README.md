@@ -1,6 +1,9 @@
 # 🧠 Clinical Trial Outcome Prediction  
 ### End-to-End Machine Learning Pipeline using AACT (ClinicalTrials.gov) Data  
 
+🚀 **Live App:** [Clinical Trial Outcome Predictor](https://clinical-trial-outcome-prediction.streamlit.app)  
+📂 **GitHub Repository:** [bvs saisantoshi19/clinical-trial-outcome-prediction](https://github.com/bvssaisantoshi19/clinical-trial-outcome-prediction)
+
 ![Python](https://img.shields.io/badge/Python-3.10-blue?logo=python)
 ![Streamlit](https://img.shields.io/badge/Streamlit-App-red?logo=streamlit)
 ![License](https://img.shields.io/badge/License-MIT-green)
@@ -237,6 +240,15 @@ cd app
 streamlit run app.py
 ```
 The app will open in your browser at **http://localhost:8501/**
+
+---
+
+## 🔗 Links
+
+- 🎯 **Live Streamlit App:** [Clinical Trial Outcome Predictor](https://clinical-trial-outcome-prediction.streamlit.app)  
+- 💻 **GitHub Repository:** [bvssaisantoshi19/clinical-trial-outcome-prediction](https://github.com/bvssaisantoshi19/clinical-trial-outcome-prediction)
+- 📊 **Project Dashboard (Coming Soon):** Power BI / Streamlit visualization extension  
+- 🧠 **Model Documentation:** Included in `/notebooks` and `/app` folders  
 
 ---
 
