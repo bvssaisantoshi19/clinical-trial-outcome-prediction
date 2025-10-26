@@ -189,7 +189,7 @@ Both **requirements.txt** and **environment.yml** files are provided to ensure r
 
 ### 1️⃣ Clone the Repository
 ```bash
-git clone https://github.com/<your-username>/clinical-trial-outcome-prediction.git
+git clone https://github.com/bvssaisantoshi19/clinical-trial-outcome-prediction.git
 cd clinical-trial-outcome-prediction
 ```
 
@@ -245,7 +245,7 @@ If you reference or build upon this work, please cite:
 
 > **Bhogadi, Sai Santoshi (2025).**  
 > *Clinical Trial Outcome Prediction: A Machine Learning Approach Using AACT Data.*  
-> GitHub Repository: [https://github.com/USERNAME/clinical-trial-outcome-prediction](https://github.com/USERNAME/clinical-trial-outcome-prediction)
+> GitHub Repository: [https://github.com/bvssaisantoshi19/clinical-trial-outcome-prediction](https://github.com/bvssaisantoshi19/clinical-trial-outcome-prediction)
 
 **Data Source:** AACT (ClinicalTrials.gov)  
 **Models Used:** Logistic Regression, XGBoost  
