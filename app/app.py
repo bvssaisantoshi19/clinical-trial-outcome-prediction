@@ -31,45 +31,42 @@ Predictions are derived from statistical patterns in historical clinical trial d
 """)
 
 # === Load Models & Thresholds (robust relative paths) ===
+REPO_ROOT = Path(__file__).resolve().parents[1]  # repo root
+MODELS_DIR = REPO_ROOT / "models"
+RESULTS_DIR = REPO_ROOT / "results"
+
 @st.cache_resource
 def load_models():
-    # /app/app.py -> /app
-    APP_DIR = Path(__file__).resolve().parent
-    # project root
-    ROOT = APP_DIR.parent
-    MODELS_DIR = ROOT / "models"
-    RESULTS_DIR = ROOT / "results"
+    try:
+        # list what exists (helps debug on Streamlit Cloud)
+        st.write("📁 Models dir:", MODELS_DIR)
+        st.write("📁 Results dir:", RESULTS_DIR)
+        st.write("Models present:", [p.name for p in MODELS_DIR.glob("*")])
+        st.write("Results subdirs:", [p.name for p in RESULTS_DIR.glob("*")])
 
-    # helpful check (optional): show what's available if something is missing
-    def _assert_exists(p: Path):
-        if not p.exists():
-            st.error(f"Missing file: {p}")
-            raise FileNotFoundError(p)
+        # models
+        logreg_model = joblib.load(MODELS_DIR / "logreg_pipeline.pkl")
+        xgb_model    = joblib.load(MODELS_DIR / "xgb_pipeline.pkl")
 
-    # model pipelines
-    p_logreg = MODELS_DIR / "logreg_pipeline.pkl"
-    p_xgb    = MODELS_DIR / "xgb_pipeline.pkl"
-    _assert_exists(p_logreg); _assert_exists(p_xgb)
-    logreg_model = joblib.load(p_logreg)
-    xgb_model    = joblib.load(p_xgb)
+        # feature lists
+        with open(MODELS_DIR / "X_cols_logreg.pkl", "rb") as f:
+            X_cols_logreg = pickle.load(f)
+        with open(MODELS_DIR / "X_cols_xgb.pkl", "rb") as f:
+            X_cols_xgb = pickle.load(f)
 
-    # feature column lists
-    p_cols_lr = MODELS_DIR / "X_cols_logreg.pkl"
-    p_cols_xg = MODELS_DIR / "X_cols_xgb.pkl"
-    _assert_exists(p_cols_lr); _assert_exists(p_cols_xg)
-    with open(p_cols_lr, "rb") as f: X_cols_logreg = pickle.load(f)
-    with open(p_cols_xg, "rb") as f: X_cols_xgb    = pickle.load(f)
+        # thresholds (or hard-code if you prefer)
+        logreg_metrics = pd.read_csv(RESULTS_DIR / "model_logreg" / "model_logreg_metrics.csv")
+        xgb_metrics    = pd.read_csv(RESULTS_DIR / "model_xgb"    / "model_xgb_metrics.csv")
+        best_thr_lr  = float(logreg_metrics["best_threshold"].iloc[0])
+        best_thr_xgb = float(xgb_metrics["best_threshold"].iloc[0])
 
-    # thresholds from results
-    p_lr_metrics = RESULTS_DIR / "model_logreg" / "model_logreg_metrics.csv"
-    p_xgb_metrics = RESULTS_DIR / "model_xgb" / "model_xgb_metrics.csv"
-    _assert_exists(p_lr_metrics); _assert_exists(p_xgb_metrics)
-    best_thr_lr  = pd.read_csv(p_lr_metrics).loc[0, "best_threshold"]
-    best_thr_xgb = pd.read_csv(p_xgb_metrics).loc[0, "best_threshold"]
+        return logreg_model, X_cols_logreg, xgb_model, X_cols_xgb, best_thr_lr, best_thr_xgb
 
-    return logreg_model, X_cols_logreg, xgb_model, X_cols_xgb, best_thr_lr, best_thr_xgb
-
-logreg_model, X_cols_logreg, xgb_model, X_cols_xgb, best_thr_lr, best_thr_xgb = load_models()
+    except Exception as e:
+        # Show the full message in the UI so we know exactly what's wrong
+        st.error(f"Model/metrics load failed: {type(e).__name__}: {e}")
+        # Re-raise to stop the app (optional)
+        raise
 
 # === Mapping Dictionaries ===
 phase_map = {'Not Applicable': 'phase_not applicable', 'Phase 1': 'phase_1', 'Phase 2': 'phase_2', 'Phase 3': 'phase_3', 'Phase 4': 'phase_4'}
