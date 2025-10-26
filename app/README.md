@@ -45,7 +45,6 @@ It also includes a **clinical trial design validity checker** that prevents logi
 |------|--------------|
 | `app.py` | Main Streamlit application script |
 | `__init__.py` | Marks the app folder as a Python package |
-| `requirements.txt` | Python dependencies for running the app |
 
 ---
 
