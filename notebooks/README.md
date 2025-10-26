@@ -89,4 +89,4 @@ All visualizations, residual heatmaps, and test summaries are saved under:
 **Models:** Logistic Regression | XGBoost | SHAP Interpretability  
 
 ---
-📁 This README describes the complete overview of data preparation, exploratory analysis, and modeling workflow located in the `/notebooks` folder of the Clinical Trial Outcome Prediction project.
+📁 *This README describes the complete overview of data preparation, exploratory analysis, and modeling workflow located in the `/notebooks` folder of the Clinical Trial Outcome Prediction project.*
