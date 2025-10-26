@@ -37,28 +37,30 @@ RESULTS_DIR = REPO_ROOT / "results"
 
 @st.cache_resource
 def load_models():
-    st.write("📁 Models dir:", MODELS_DIR)
-    st.write("📁 Results dir:", RESULTS_DIR)
-    st.write("Models present:", [p.name for p in MODELS_DIR.glob("*")])
-    st.write("Results subdirs:", [p.name for p in RESULTS_DIR.glob("*")])
+    try:
+        MODELS_DIR = "models"
+        RESULTS_DIR = "results"
 
-    # models
-    logreg_model = joblib.load(MODELS_DIR / "logreg_pipeline.pkl")
-    xgb_model    = joblib.load(MODELS_DIR / "xgb_pipeline.pkl")
+        logreg_model = joblib.load(f"{MODELS_DIR}/logreg_pipeline.pkl")
+        with open(f"{MODELS_DIR}/X_cols_logreg.pkl", "rb") as f:
+            X_cols_logreg = pickle.load(f)
 
-    # feature lists
-    with open(MODELS_DIR / "X_cols_logreg.pkl", "rb") as f:
-        X_cols_logreg = pickle.load(f)
-    with open(MODELS_DIR / "X_cols_xgb.pkl", "rb") as f:
-        X_cols_xgb = pickle.load(f)
+        xgb_model = joblib.load(f"{MODELS_DIR}/xgb_pipeline.pkl")
+        with open(f"{MODELS_DIR}/X_cols_xgb.pkl", "rb") as f:
+            X_cols_xgb = pickle.load(f)
 
-    # thresholds (or hard-code if you prefer)
-    logreg_metrics = pd.read_csv(RESULTS_DIR / "model_logreg" / "model_logreg_metrics.csv")
-    xgb_metrics    = pd.read_csv(RESULTS_DIR / "model_xgb"    / "model_xgb_metrics.csv")
-    best_thr_lr  = float(logreg_metrics["best_threshold"].iloc[0])
-    best_thr_xgb = float(xgb_metrics["best_threshold"].iloc[0])
+        logreg_metrics = pd.read_csv(f"{RESULTS_DIR}/model_logreg/model_logreg_metrics.csv")
+        xgb_metrics    = pd.read_csv(f"{RESULTS_DIR}/model_xgb/model_xgb_metrics.csv")
+        best_thr_lr  = float(logreg_metrics["best_threshold"].iloc[0])
+        best_thr_xgb = float(xgb_metrics["best_threshold"].iloc[0])
 
-    return logreg_model, X_cols_logreg, xgb_model, X_cols_xgb, best_thr_lr, best_thr_xgb
+        return logreg_model, X_cols_logreg, xgb_model, X_cols_xgb, best_thr_lr, best_thr_xgb
+
+    except Exception as e:
+        import traceback
+        st.error("Model/metrics load failed:")
+        st.code("".join(traceback.format_exception(type(e), e, e.__traceback__)))
+        raise
 
 logreg_model, X_cols_logreg, xgb_model, X_cols_xgb, best_thr_lr, best_thr_xgb = load_models()
 
