@@ -183,6 +183,61 @@ By combining rigorous EDA, interpretable machine learning, and real-time deploym
 
 ---
 
+## ⚙️ Setup and Installation Instructions
+This project can be run using either pip or conda.
+Both **requirements.txt** and **environment.yml** files are provided to ensure reproducibility across environments.
+
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/<your-username>/clinical-trial-outcome-prediction.git
+cd clinical-trial-outcome-prediction
+```
+
+### 2️⃣ Setup Using pip (Lightweight Option)
+Create and activate a virtual environment
+```bash
+python -m venv venv
+# Activate the environment
+venv\Scripts\activate       # For Windows
+source venv/bin/activate    # For Mac/Linux
+```
+Install all required dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 3️⃣ Setup Using Conda (Full Reproducibility)
+Create the environment from the provided YAML file
+```bash
+conda env create -f environment.yml
+# Activate the environment
+conda activate ct_outcome
+```
+
+### 4️⃣ Verify Installation
+Run the following command to ensure all dependencies are properly installed:
+```bash
+python -c "import pandas, sklearn, xgboost, shap, streamlit; print('✅ Environment setup successful!')"
+```
+If you see `✅ Environment setup successful!`, your environment is ready to use.
+
+### 5️⃣ Run Jupyter Notebooks
+If you plan to explore or modify the notebooks:
+```bash
+pip install ipykernel
+python -m ipykernel install --user --name=ct_outcome --display-name "Python (ct_outcome)"
+jupyter notebook
+```
+Then, in Jupyter, select the Python (ct_outcome) kernel before running any notebook.
+
+### 6️⃣ Run the Streamlit App
+
+```bash
+cd app
+streamlit run app.py
+```
+The app will open in your browser at **http://localhost:8501/**
+
 ---
 
 ## 📚 Citation & Credits
