@@ -14,14 +14,14 @@ Each table from the AACT (ClinicalTrials.gov) database was cleaned individually 
 | Notebook | Description | Output |
 |-----------|-------------|---------|
 | `1_df_studies.ipynb` | Cleans and standardizes the **`studies`** table. Handles missing values, converts date columns, calculates duration of the study, fills `enrollment` by phase-wise median, and reassigns combined phases (e.g., *Phase 1/2*) based on enrollment distribution. | `1_df_studies.csv` |
-| `2_df_baseline_features.ipynb` | Processes **baseline counts & measurements** to generate participant-level demographics. Handles missingness and merges into summarized baseline features. **baseline features** were later dropped since most of the data was missing and inconsistent | `2_df_baseline_features.csv` |
+| `2_df_baseline_features.ipynb` | Processes **baseline counts & measurements** to generate participant-level demographics. Handles missingness and merges into summarized baseline features. **baseline features** were later dropped due to high missingness and inconsistency. | `2_df_baseline_features.csv` |
 | `3_df_interventions.ipynb` | Simplifies and one-hot encodes **intervention types** (Drug, Device, Behavioral, etc.), aggregating them by trial ID. | `3_df_interventions.csv` |
 | `4_df_conditions.ipynb` | Groups 250+ specific disease terms into 15+ broader **condition categories** (e.g., Cancer, Cardiovascular, Neurological) and one-hot encodes condition groups. | `4_df_conditions.csv` |
 | `5_df_designs.ipynb` | Extracts, standardizes and one-hot encodes **design attributes** such as Allocation, Masking, Model, and Purpose for modeling. | `5_df_designs.csv` |
-| `6_df_eligibilities.ipynb` | Cleans eligibility-level data, generating flags for **age group**, **gender**, **healthy volunteers** categories. | `6_df_eligibilities.csv` |
+| `6_df_eligibilities.ipynb` | Cleans eligibility-level data, standardizes gender values and convertes age strings into numeric years for uniform comparison. Encoded **age group**, **gender**, **healthy volunteers**. | `6_df_eligibilities.csv` |
 | `7_df_sponsors.ipynb` | Aggregates and classifies sponsors (Industry, Government, Other). **Sponsor roles** were later dropped since most were “Lead.” | `7_df_sponsors.csv` |
 | `8_df_merged.ipynb` | Merges all cleaned datasets into a **single master file (`df_merged.csv`)** for EDA. | `df_merged.csv` |
-| `9_df_final.ipynb` | Incorporates EDA insights to remove non-informative columns (e.g., `sponsor_role`, `high_enrollment_flag`) and apply log-transformations to `enrollment` and `duration`, finalizing the **model-ready dataset**. | `df_final_grouped.csv`, `df_final_onehot.csv`|
+| `9_df_final.ipynb` | Incorporates EDA insights to remove non-informative columns (e.g., `sponsor_role`) and apply log-transformations to `enrollment` and `duration`, finalizing the **model-ready dataset**. | `df_final_grouped.csv`, `df_final_onehot.csv`|
 
 📂 **Processed datasets:** stored in `../data/processed/`
 📂 **Final modeling-ready datasets:** stored in `../data/final/` 
@@ -50,7 +50,7 @@ All visualizations, residual heatmaps, and test summaries are saved under:
 
 | Notebook | Description | Output |
 |-----------|-------------|---------|
-| `model_logreg.ipynb` | Trains a **Logistic Regression** model using the Youden’s J threshold (~0.42). Tests multiple solvers (LBFGS, SAGA) and regularizations (L1/L2). | `logreg_pipeline.pkl` in `../models/` |
+| `model_logreg.ipynb` | Build a **Logistic Regression** model with tuned hyperparameters (`LBFGS solver`, `L2 penalty`, `C1`) and applies the Youden’s J threshold (~0.42). | `logreg_pipeline.pkl` in `../models/` |
 | `model_xgboost.ipynb` | Builds an **XGBoost Classifier** with tuned hyperparameters (`n_estimators`, `max_depth`, `scale_pos_weight`) and applies the Youden threshold (~0.85). | `xgb_pipeline.pkl` in `../models/` |
 | `SHAP.ipynb` | Performs **SHAP-based interpretability** for both models, including global (summary, bar) and local (force, waterfall) visualizations. | SHAP plots in `../results/shap_outputs/` |
 
@@ -70,7 +70,7 @@ All visualizations, residual heatmaps, and test summaries are saved under:
   **Behavioral** interventions also show **better-than-expected success rates**, possibly due to shorter study durations and lower operational complexity.  
 - **Design strength:** **Randomized**, **Parallel**, and **blinded (Double/Triple/Quadruple)** designs associate with higher completion than **Non-randomized**, **Single-group**, or open-label setups.  
 - **Scale effects:** Higher **log_enrollment** is strongly linked to success; **log_duration** shows a smaller positive effect. **>2 interventions** and overly complex setups reduce completion.  
-- **SHAP interpretability (both models):** Top contributors are **Phase**, **Intervention Type**, and **Study Model**; **Masking** and **Allocation** add consistent lift; **log_enrollment** is a stable positive driver.  
+- **SHAP interpretability (both models):** Top contributors are **Phase**, **Sponsor**, and **Study Model**; **Intervention type** and **Condition groups** add consistent lift; **log_enrollment** and **log duration** are a stable positive numerical driver.  
 - **Thresholding:** Youden’s J was used to balance sensitivity/specificity given class imbalance (approx. **0.42** for Logistic Regression; **0.85** for XGBoost).  
 - **Scope note:** Models reflect **design-level feasibility** (registry patterns). Biological, safety, and operational factors such as adverse events, funding, or recruitment issues are not modeled directly.
 
@@ -89,3 +89,4 @@ All visualizations, residual heatmaps, and test summaries are saved under:
 **Models:** Logistic Regression | XGBoost | SHAP Interpretability  
 
 ---
+📁 This README describes the complete overview of data preparation, exploratory analysis, and modeling workflow located in the `/notebooks` folder of the Clinical Trial Outcome Prediction project.
