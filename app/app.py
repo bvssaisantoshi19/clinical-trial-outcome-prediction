@@ -184,7 +184,7 @@ if sel_masking == "Quadruple" and sel_model == "Single Group":
     invalid = True
     invalid_reasons.append("Quadruple masking cannot be used with Single Group design.")
 
-if sel_model == "Parallel" and sel_allo == "Randomized" and number_of_arms == 1:
+if sel_model == "Parallel" and sel_allo == "Randomized" and user_input["number_of_arms"] == 1:
     invalid = True
     invalid_reasons.append("Parallel Randomized studies must have more than one arm.")
 
